@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="9.0.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="NATS.Net" Version="2.5.7"/>
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="10.6.0.109712">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    
+    <Choose>
+        <When Condition=" '$(SKIP_OPENAPI_GENERATION)' == 'true'">
+            <PropertyGroup>
+                <OpenApiGenerateDocumentsOnBuild>false</OpenApiGenerateDocumentsOnBuild>
+            </PropertyGroup>
+        </When>
+        <Otherwise>
+            <PropertyGroup>
+                <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
+                <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+                <OpenApiDocumentsDirectory>.</OpenApiDocumentsDirectory>
+            </PropertyGroup>
+        </Otherwise>
+    </Choose>
+
+</Project>
