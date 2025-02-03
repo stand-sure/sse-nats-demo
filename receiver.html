@@ -11,8 +11,16 @@
 
         const output = document.querySelector(".output");
         source.onmessage = (event) => {
-            console.log(`data: ${event.data}`);
-            output.textContent += `data: ${event.data}\n\n`;
+            const data = event.data;
+
+            if (data === "__END__"){
+                source.close();
+                output.textContent += `FINIS`;
+                return;
+            }
+
+            console.log(`data: ${data}`);
+            output.textContent += `data: ${data}\n\n`;
         };
         source.onopen = () => console.log("opened");
 
