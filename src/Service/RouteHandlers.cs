@@ -8,10 +8,12 @@ internal static class RouteHandlers
 {
     public static async Task GetEventsAsync(
         string topic,
-        [FromServices] HttpContext context,
+        [FromServices] IHttpContextAccessor contextAccessor,
         [FromServices] INatsClient natsClient,
         CancellationToken cancellationToken)
     {
+        HttpContext context = contextAccessor.HttpContext!;
+
         context.Response.Headers.ContentType = "text/event-stream";
         context.Response.Headers.CacheControl = "no-cache";
         context.Response.Headers.Connection = "key-alive";
