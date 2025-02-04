@@ -1,0 +1,42 @@
+<html lang="en">
+<head>
+    <title>SSE Demo</title>
+</head>
+<body>
+<div class="output" style="white-space: pre-line"></div>
+
+<script type="text/javascript">
+    if (!!window.EventSource) {
+        const source = new EventSource('http://localhost:5082/events?topic=foo');
+
+        const output = document.querySelector(".output");
+        source.onmessage = (event) => {
+            const data = event.data;
+
+            if (data === "__END__"){
+                source.close();
+                output.textContent += `FINIS`;
+                return;
+            }
+
+            console.log(`data: ${data}`);
+            output.textContent += `data: ${data}\n\n`;
+        };
+        source.onopen = () => console.log("opened");
+
+        source.onerror = (event) => {
+            if (event.eventPhase === EventSource.CLOSED) {
+                source.close();
+                console.log("Closed")
+            }
+
+            if (event.target.readyState === EventSource.CLOSED) {
+                console.log("Disconnected");
+            } else if (event.target.readyState === EventSource.CONNECTING) {
+                console.log("Connecting...");
+            }
+        };
+    }
+</script>
+</body>
+</html>
